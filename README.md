@@ -1,6 +1,21 @@
 # 💕 Us Two
 
-A single-file, offline-capable card game for couples — conversation, connection, gratitude, and (behind a consent gate) adult play. Works solo on one device or synced across two, so long-distance partners can play together.
+<p align="center">
+  <img src="img/img-1.png" alt="Us Two — 700 prompts across seven decks for couples" width="800">
+</p>
+
+<p align="center">
+  <strong>A single-file, offline-capable card game for couples.</strong><br>
+  Conversation, connection, gratitude, and (behind a consent gate) adult play. Works on one device or synced across two.
+</p>
+
+<p align="center">
+  <img src="img/img-2.png" alt="Desktop view showing the chips row and an active card" width="600">
+</p>
+
+<p align="center">
+  <em>Desktop layout with the game chips and an active prompt.</em>
+</p>
 
 Built as one HTML file with zero build steps, zero backend, and zero accounts. Drop it on any static host, share the link, and play.
 
@@ -11,6 +26,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 ## Table of Contents
 
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Quick Start](#quick-start)
 - [How to Play](#how-to-play)
 - [The Decks](#the-decks)
@@ -45,6 +61,70 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 - **Fully responsive** — tuned for phones, tablets, laptops, and landscape phones.
 - **Zero backend** — pure client-side, deploys anywhere static files are served.
 - **Offline solo play** — works without internet if you skip Party Mode.
+
+---
+
+## Screenshots
+
+### Desktop and mobile
+
+| Desktop                                         | Mobile                                                  |
+| ----------------------------------------------- | ------------------------------------------------------- |
+| ![Desktop layout with chips row](img/img-2.png) | ![Mobile layout with hamburger selector](img/img-3.png) |
+
+<p align="center">
+  <em>Left: desktop chips row and full-size card. Right: mobile game selector bar with the bottom sheet closed.</em>
+</p>
+
+### Deck selector on mobile
+
+<p align="center">
+  <img src="img/img-4.png" alt="Mobile bottom sheet showing Sweet and Mature sections with all seven decks" width="380">
+</p>
+
+<p align="center">
+  <em>The bottom sheet is split into <strong>Sweet 💕</strong> and <strong>Mature 18+</strong> sections, each showing card counts and adult badges where relevant.</em>
+</p>
+
+### 18+ consent gate
+
+<p align="center">
+  <img src="img/img-5.png" alt="Consent modal with three checkboxes for age, consent, and the right to stop" width="420">
+</p>
+
+<p align="center">
+  <em>Three confirmations are required before any adult deck loads. Consent is remembered for 24 hours and clearable from Settings.</em>
+</p>
+
+### Action card
+
+<p align="center">
+  <img src="img/img-6.png" alt="Action card with LET'S DO IT and SKIP FOR NOW buttons" width="500">
+</p>
+
+<p align="center">
+  <em>Action cards from Unboxed Us, Dirty Jenga, and Sexy Commands show both buttons. Skipping is always free.</em>
+</p>
+
+### Drunk Desire safety note
+
+<p align="center">
+  <img src="img/img-7.png" alt="Drunk Desire card with safety note visible" width="500">
+</p>
+
+<p align="center">
+  <em>The Drunk Desire deck shows a responsible-play reminder on every card: know your limits, never pressure your partner.</em>
+</p>
+
+### Party Mode host panel
+
+<p align="center">
+  <img src="img/img-8.png" alt="Host panel showing room code, QR code, and guest count" width="420">
+</p>
+
+<p align="center">
+  <em>Share the code, link, or QR for a double-date session. Everyone sees the same card in real time.</em>
+</p>
 
 ---
 
@@ -90,6 +170,10 @@ Solo mode works fully offline over `file://`.
 
 ## The Decks
 
+<p align="center">
+  <img src="img/img-2.png" alt="The nine game mode chips on desktop, split into sweet and adult groups" width="720">
+</p>
+
 | Deck            | Emoji | Count   | Style                                                      | Adult   | In Sweet Mix |
 | --------------- | ----- | ------- | ---------------------------------------------------------- | ------- | ------------ |
 | Flamingo Nights | 🦩     | 100     | Deep conversation + playful dilemmas                       | No      | ✅            |
@@ -106,13 +190,19 @@ Solo mode works fully offline over `file://`.
 
 ### Card behaviour by type
 
-- **Plain cards** — a question or prompt, no buttons.
-- **Action cards** — from Unboxed Us, Dirty Jenga, and Sexy Commands. Show **💕 LET'S DO IT** and **⏭️ SKIP FOR NOW**.
-- **Drunk Desire cards** — show the action buttons *and* a small safety reminder on the card face.
+| Type                 | Deck(s)                                                         | Buttons shown                                    |
+| -------------------- | --------------------------------------------------------------- | ------------------------------------------------ |
+| Plain                | Flamingo Nights, Unboxed NG, Heart to Heart, most of Unboxed Us | None                                             |
+| Action               | Unboxed Us (partly), Dirty Jenga, Sexy Commands                 | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW                   |
+| Action + safety note | Drunk Desire                                                    | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW · safety reminder |
 
 ---
 
 ## Adult Content & Consent
+
+<p align="center">
+  <img src="img/img-5.png" alt="The three-checkbox consent modal for adult decks" width="420">
+</p>
 
 The three 18+ decks are gated. Selecting any of them — or **Full Mix** — triggers a consent modal before anything loads.
 
@@ -142,6 +232,10 @@ The modal shows three checkboxes, and the **I understand** button stays disabled
 ---
 
 ## Safety & Responsible Play
+
+<p align="center">
+  <img src="img/img-7.png" alt="Drunk Desire card with the responsible-play reminder" width="500">
+</p>
 
 A few things worth stating plainly, since these decks deal with intimacy and alcohol.
 
@@ -176,6 +270,10 @@ A few things worth stating plainly, since these decks deal with intimacy and alc
 
 Two shuffle options sit at the top of the chip list and at the top of the deck sheet.
 
+<p align="center">
+  <img src="img/img-2.png" alt="The Sweet Mix and Full Mix chips side by side" width="600">
+</p>
+
 ### 💕 Sweet Mix
 
 Draws from the four sweet decks: Flamingo Nights, Unboxed Us, Unboxed NG, and Heart to Heart. **400 prompts total.** Safe for any mood, any time, any place.
@@ -194,6 +292,10 @@ To change what goes into either mix, edit those two arrays.
 ---
 
 ## Party Mode (Double Dates)
+
+<p align="center">
+  <img src="img/img-8.png" alt="Diagram showing two devices synced to the same card" width="620">
+</p>
 
 Party Mode uses WebRTC (via PeerJS) so two devices — or two couples on four devices — share the same card.
 
@@ -232,6 +334,10 @@ Party Mode uses WebRTC (via PeerJS) so two devices — or two couples on four de
 
 ## Onboarding Guide
 
+<p align="center">
+  <img src="img/img-1.png" alt="Onboarding guide showing the welcome slide" width="420">
+</p>
+
 An 8-step guide appears automatically on first open and can be reopened anytime.
 
 1. **Welcome** — what the app is and what's inside
@@ -267,6 +373,10 @@ Shortcuts are paused while the onboarding guide is open, while the deck sheet is
 ---
 
 ## Responsive Design
+
+<p align="center">
+  <img src="img/img-3.png" alt="The same card rendered on phone, tablet, and desktop" width="800">
+</p>
 
 ### Desktop and large tablets
 
@@ -427,7 +537,24 @@ By default the page loads **PeerJS** from `unpkg.com` and **QR codes** from `api
 ### File structure
 
 ```
-us-two.html   ← everything (markup, styles, logic, decks)
+your-project/
+├── us-two/
+│   ├── us-two.html           ← everything (markup, styles, logic, decks)
+│   └── README.md             ← this file
+└── assets/
+    ├── couple-banner.png
+    ├── couple-desktop.png
+    ├── couple-mobile.png
+    ├── couple-deck-sheet.png
+    ├── couple-consent.png
+    ├── couple-action-card.png
+    ├── couple-safety-note.png
+    ├── couple-host-panel.png
+    ├── couple-deck-chips.png
+    ├── couple-mixes.png
+    ├── couple-mode-diagram.png
+    ├── couple-onboarding.png
+    └── couple-responsive.png
 ```
 
 ### State model
@@ -573,4 +700,6 @@ The 18+ decks are intended for consensual adult play only. Neither the app nor i
 - Sound effects: synthesized in-browser with the Web Audio API.
 - Confetti: custom canvas animation.
 
-Enjoy each other. 💕
+<p align="center">
+  Enjoy each other. 💕
+</p>
