@@ -59,7 +59,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 - **Consent gate for adult content** — a three-checkbox agreement appears before any mature deck, remembered for 24 hours and clearable anytime. In Party Mode, each guest confirms on their own device before any adult card renders.
 - **Sweet Mix and Full Mix** — one safe shuffle, one that includes everything.
 - **Action cards** — some prompts ask you to do something together. Accept with **💕 LET'S DO IT** or skip with **⏭️ SKIP FOR NOW**.
-- **Scoring deck** — Never Have I Ever lets both partners vote **✋ I HAVE** or **🙅 I HAVEN'T** on their own device, then reveals the tally with live score updates.
+- **Scoring deck** — Never Have I Ever lets both partners vote **✋ I HAVE** or **🙅 I HAVEN'T** on their own device, then reveals the tally with live score updates. If a vote is holding things up, the host can skip the card without scoring anyone.
 - **Drunk Desire safety note** — a small responsible-play reminder appears on the card itself.
 - **Real-time Party Mode** — for double dates: one host, everyone sees the same card. Guests dedup on rejoin via a persistent client ID, and duplicate names get auto-numbered.
 - **Dark mode** — Light, Dark, and System themes, saved per device, with no flash of light content on load.
@@ -345,9 +345,10 @@ The card shows two vote rows — one for **You**, one for **Partner**. Vote on e
 
 Each partner votes on their own device. The host's screen shows a live tally ("2 of 2 voted"), then reveals when everyone is in. Guests see the same breakdown and their own score.
 
-### Reset and deck switching
+### Reset, skip, and deck switching
 
 - **Reset** clears the current card and puts everyone back to **5 points**.
+- **Skip this card** discards the current prompt without scoring anyone. It appears only on the host's device (or solo), and only while votes are still coming in. Useful when someone has stepped away or the card isn't landing.
 - **Switching to a different deck** also resets scores, so every scoring session starts fresh.
 - If the host tries to switch away from the scoring deck with votes in progress, a confirmation modal appears to avoid accidental data loss.
 
@@ -467,6 +468,7 @@ Us Two ships with three theme states, cycled by the theme button in the header:
 | `Space` / `→` / `Enter` | Draw next card              |
 | `1`                     | Let's Do It (action cards)  |
 | `2`                     | Skip For Now (action cards) |
+| `S`                     | Skip this card (scoring)    |
 | `R`                     | Reset the deck              |
 
 Shortcuts are paused while the onboarding guide is open, while the deck sheet is open, or while typing in an input field.
