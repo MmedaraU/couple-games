@@ -771,7 +771,9 @@ Party Mode requires HTTPS (or `localhost`).
 
 **Never Have I Ever reveal won't enable**
 
-- Every voter must vote first. In Party Mode, watch the "X of Y voted" counter. If a partner walks away without voting, use Reset to clear the card.
+- Every voter must vote first. In Party Mode, watch the "X of Y voted" counter.
+- If a partner walks away without voting, tap **⏭️ Skip this card** to move on without scoring anyone — or press `S`.
+- If you want a clean slate instead, **Reset** clears the card and puts everyone back to 5 points.
 
 **Scores disappeared**
 
