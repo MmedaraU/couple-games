@@ -4054,18 +4054,21 @@
 
     function renderReveal() {
       revealBlock.hidden = false;
+
       const list = role === "solo"
         ? state.voters
         : [state.voters[0], ...state.guests];
 
-      const haveVoters = list.filter(v => v.vote === "have");
-      const haventVoters = list.filter(v => v.vote === "havent");
+      const haveVoters = list.filter(v => v.voted && v.vote === "have");
+      const haventVoters = list.filter(v => v.voted && v.vote === "havent");
+
+      const fmt = v => `${v.name} <span class="score-inline">${v.score}</span>`;
 
       const haveHtml = haveVoters.length
-        ? haveVoters.map(v => `${v.name}<span class="score-inline">${v.score}</span>`).join(" · ")
+        ? haveVoters.map(fmt).join(" · ")
         : '<span class="reveal-empty">Nobody</span>';
       const haventHtml = haventVoters.length
-        ? haventVoters.map(v => `${v.name}<span class="score-inline">${v.score}</span>`).join(" · ")
+        ? haventVoters.map(fmt).join(" · ")
         : '<span class="reveal-empty">Nobody</span>';
 
       revealBlock.innerHTML = `
@@ -4079,7 +4082,6 @@
     </div>
   `;
     }
-
     /* =========================================================
        12. GAME LOGIC
        ========================================================= */
@@ -4175,12 +4177,21 @@
     }
 
     function revealAnswers() {
+      if (role === "guest") return;
       if (!state.isScoring) return;
       if (state.votePhase === "revealed") return;
 
       const allVoters = role === "solo"
         ? state.voters
         : [state.voters[0], ...state.guests];
+
+      // Defensive: log what we're about to score, so a wrong tally is visible
+      // in the console when someone reports "scores didn't change".
+      try {
+        console.log("[reveal] scoring:", allVoters.map(v =>
+          `${v.name}: voted=${v.voted} vote=${v.vote} score=${v.score}`
+        ).join(" | "));
+      } catch (e) { }
 
       allVoters.forEach(v => {
         if (!v.voted) return;
@@ -4370,6 +4381,7 @@
     }
 
     function applyRemoteState(p) {
+      const drawnChanged = p.drawn !== state.drawn;
       const sameCard = state.current && p.card &&
         state.current.text === p.card.text && state.current.deck === p.card.deck;
       const filterChanged = p.filter !== state.filter;
@@ -4380,11 +4392,14 @@
       state.skipCount = p.skipCount;
       remoteRemaining = p.remaining;
       if (p.votePhase) state.votePhase = p.votePhase;
-      if (Array.isArray(p.voters)) state.voters = p.voters.map(v => ({ ...v }));
+      if (Array.isArray(p.voters)) {
+        state.voters = p.voters.map(v => ({ ...v }));
+        // On guest devices, voters[0] is the host's entry. Label it "Host" so the
+        // leaderboard and reveal don't show the host as "You" on everyone's screen.
+        if (role === "guest" && state.voters[0]) state.voters[0].name = "Host";
+      }
       if (Array.isArray(p.guests)) state.guests = p.guests.map(g => ({ ...g }));
 
-      // Guest-side adult check: if host switches to an adult deck and guest hasn't consented,
-      // pause the card and show the gate.
       if (role === "guest" && filterChanged && isAdultFilter(p.filter) && !hasConsent()) {
         state.filter = p.filter;
         updateFilterUI();
@@ -4393,7 +4408,7 @@
         qEl.textContent = "Waiting for you to confirm 18+ content…";
         showConsentModal(
           () => { if (state.pendingCard) { render(state.pendingCard, { animate: true }); state.pendingCard = null; } },
-          () => { /* declined — leave the paused state */ }
+          () => { }
         );
         return;
       }
@@ -4407,19 +4422,19 @@
       }
 
       if (p.card) {
-        if (!sameCard) {
+        const isNewCard = drawnChanged || !sameCard;
+        if (isNewCard) {
           cardSound();
           myVoted = false;
           state.pendingCard = null;
         }
-        render(p.card, { animate: !sameCard });
+        render(p.card, { animate: isNewCard });
       } else {
         myVoted = false;
         state.pendingCard = null;
         showWelcome();
       }
     }
-
     /* =========================================================
        14. PARTY MODE UI
        ========================================================= */
