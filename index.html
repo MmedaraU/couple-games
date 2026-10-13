@@ -2332,7 +2332,7 @@
   <footer>
     <span id="stats">0 cards drawn</span>
     <button class="helplink" id="helpLink">How to play ❓</button>
-    <span class="keys">Space / → = next · 1 = do · 2 = skip · R = reset</span>
+    <span class="keys">Space / → / Enter = next · 1 = do · 2 = skip · S = skip card · R = reset</span>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2370,12 +2370,12 @@
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
   <script>
     /* =========================================================
-       1. THE DECKS  (800 prompts total)
+       1. THE DECKS  (766 prompts total)
        ========================================================= */
 
     const RAW = {
 
-      /* ---------- FLAMINGO NIGHTS (100) ---------- */
+      /* ---------- FLAMINGO NIGHTS (66) ---------- */
       flamingo: [
         "What about me is hardest for you to understand?",
         "What parts of yourself do you see in me?",
@@ -3333,7 +3333,8 @@
       guests: [],
       votePhase: "voting",
       isScoring: false,
-      actionLocked: false
+      actionLocked: false,
+      pendingCard: null
     };
 
     let role = "solo";
@@ -3348,6 +3349,7 @@
     let introIndex = 0;
     let deckSheetOpen = false;
     let adultConsentGiven = false;
+    let myVoted = false;
 
     let clientId = "";
     try {
@@ -3605,7 +3607,7 @@
       {
         emoji: "💕",
         title: "Welcome to Us Two",
-        body: "Six decks, 765 prompts, made just for the two of you.Conversation, gratitude, actions, and — behind an 18+ gate — spicier content plus a Never Have I Ever scoring game."
+        body: "Six decks, 766 prompts, made just for the two of you. Conversation, gratitude, actions, and — behind an 18+ gate — spicier content plus a Never Have I Ever scoring game."
       },
       {
         emoji: "🎴",
@@ -3615,7 +3617,7 @@
       {
         emoji: "👉",
         title: "2. Draw a card",
-        body: "Tap Next Card, swipe left on the card, or press Space / →. Take turns, or answer every prompt together."
+        body: "Tap Next Card, swipe left on the card, or press Space / → / Enter. Take turns, or answer every prompt together."
       },
       {
         emoji: "💞",
@@ -3670,7 +3672,7 @@
 
       if (introIndex === INTRO_STEPS.length - 1) {
         introTip.hidden = false;
-        introTip.innerHTML = "<b>Shortcuts:</b> Space / → = next card · 1 = do · 2 = skip · R = reset. Reopen anytime with the ❓ button.";
+        introTip.innerHTML = "<b>Shortcuts:</b> Space / → / Enter = next card · 1 = do · 2 = skip · S = skip card · R = reset. Reopen anytime with the ❓ button.";
       } else {
         introTip.hidden = true;
       }
@@ -3969,9 +3971,9 @@
         } else {
           coupleVote.hidden = true;
           scoringChoices.hidden = false;
-          haveBtn.disabled = state.voters[0].voted;
-          haventBtn.disabled = state.voters[0].voted;
-          leaderBtn.hidden = true;
+          haveBtn.disabled = myVoted;
+          haventBtn.disabled = myVoted;
+          leaderBtn.hidden = false;
         }
 
         // Reveal button — host/solo only, enabled when all votes are in
@@ -4046,7 +4048,7 @@
         const voted = state.guests.filter(g => g.voted).length + (state.voters[0].voted ? 1 : 0);
         voteStatus.innerHTML = `<span class="vote-pill">${voted} of ${total} voted</span>`;
       } else {
-        voteStatus.innerHTML = state.voters[0].voted
+        voteStatus.innerHTML = myVoted
           ? `<span class="vote-pill wait">Voted — waiting for the host</span>`
           : `<span class="vote-pill wait">Vote to continue</span>`;
       }
@@ -4095,6 +4097,8 @@
       const item = state.queue.pop();
       state.current = item;
       state.drawn++;
+      state.pendingCard = null;
+      myVoted = false;
       resetVotes();
       cardSound();
       burst(34);
@@ -4156,8 +4160,7 @@
     function guestVote(value) {
       if (role === "guest") {
         sendToHost({ type: "action", action: "vote", value });
-        state.voters[0].voted = true;
-        state.voters[0].vote = value;
+        myVoted = true;
         haveBtn.disabled = true;
         haventBtn.disabled = true;
         renderVoteStatus();
@@ -4223,24 +4226,30 @@
     </div>`;
       }).join("");
 
+      const canReset = role !== "guest";
+      const actions = canReset
+        ? `<button class="btn ghost" id="mReset">Reset Scores</button>
+           <button class="btn primary" id="mClose">Close</button>`
+        : `<button class="btn primary" id="mClose">Close</button>`;
+
       openModal(`
     <h2>🏆 Scores</h2>
     <p>Started at 5. Every <b>I HAVE</b> costs one point. Highest score wins.</p>
     <div class="leaderboard">${rows}</div>
-    <div class="modal-actions">
-      <button class="btn ghost" id="mReset">Reset Scores</button>
-      <button class="btn primary" id="mClose">Close</button>
-    </div>
+    <div class="modal-actions">${actions}</div>
   `);
 
       document.getElementById("mClose").onclick = closeModal;
-      document.getElementById("mReset").onclick = () => {
-        state.voters.forEach(v => { v.score = 5; });
-        state.guests.forEach(g => { g.score = 5; });
-        closeModal();
-        broadcastState();
-        toast("Scores reset 🏆");
-      };
+      const resetEl = document.getElementById("mReset");
+      if (resetEl) {
+        resetEl.onclick = () => {
+          state.voters.forEach(v => { v.score = 5; });
+          state.guests.forEach(g => { g.score = 5; });
+          closeModal();
+          broadcastState();
+          toast("Scores reset 🏆");
+        };
+      }
     }
 
     function resetGame() {
@@ -4249,7 +4258,9 @@
       state.doCount = 0;
       state.skipCount = 0;
       state.current = null;
+      state.pendingCard = null;
       state.actionLocked = false;
+      myVoted = false;
       resetVotes();
       state.voters.forEach(v => { v.score = 5; });
       state.guests.forEach(g => { g.score = 5; });
@@ -4265,10 +4276,12 @@
       state.filter = key;
       buildQueue();
       state.current = null;
+      state.pendingCard = null;
       state.drawn = 0;
       state.doCount = 0;
       state.skipCount = 0;
       state.actionLocked = false;
+      myVoted = false;
       resetVotes();
       state.voters.forEach(v => { v.score = 5; });
       state.guests.forEach(g => { g.score = 5; });
@@ -4389,9 +4402,15 @@
       }
 
       if (p.card) {
-        if (!sameCard) cardSound();
+        if (!sameCard) {
+          cardSound();
+          myVoted = false;
+          state.pendingCard = null;
+        }
         render(p.card, { animate: !sameCard });
       } else {
+        myVoted = false;
+        state.pendingCard = null;
         showWelcome();
       }
     }
@@ -4414,14 +4433,16 @@
 
     function applyRoleUI() {
       if (role === "guest") {
-        controls.hidden = true;
+        nextBtn.hidden = true;
+        resetBtn.hidden = true;
         waiting.hidden = false;
         gameSelect.disabled = true;
         [...chipsEl.children].forEach(c => { c.disabled = true; });
         [...deckSheetList.querySelectorAll(".deck-option")].forEach(c => { c.disabled = true; });
         partyBtn.textContent = "🔗 Joined";
       } else {
-        controls.hidden = false;
+        nextBtn.hidden = false;
+        resetBtn.hidden = false;
         waiting.hidden = true;
         gameSelect.disabled = false;
         [...chipsEl.children].forEach(c => { c.disabled = false; });

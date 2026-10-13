@@ -1,7 +1,7 @@
 # 💕 Us Two
 
 <p align="center">
-  <img src="img/img-1.png" alt="Us Two — 800 prompts across eight decks for couples" width="800">
+  <img src="img/img-1.png" alt="Us Two — 766 prompts across six decks for couples" width="800">
 </p>
 
 <p align="center">
@@ -36,7 +36,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 - [Safety & Responsible Play](#safety--responsible-play)
 - [Mix Modes](#mix-modes)
 - [Scoring — Never Have I Ever](#scoring--never-have-i-ever)
-- [Party Mode (Double Dates)](#party-mode-double-dates)
+- [Party Mode](#party-mode)
 - [Onboarding Guide](#onboarding-guide)
 - [Dark Mode](#dark-mode)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
@@ -55,15 +55,16 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 
 ## Features
 
-- **765 prompts** across six decks — three sweet decks, two adult decks (18+), and one scoring deck (18+).
-- **Consent gate for adult content** — a three-checkbox agreement appears before any mature deck, remembered for 24 hours and clearable anytime. In Party Mode, each guest confirms on their own device before any adult card renders.
+- **766 prompts** across six decks — three sweet decks, two adult decks (18+), and one scoring deck (18+).
+- **Consent gate for adult content** — a three-checkbox agreement appears before any mature deck, remembered for 24 hours and clearable anytime. In Party Mode, each device confirms independently before any adult card renders.
 - **Sweet Mix and Full Mix** — one safe shuffle, one that includes everything.
 - **Action cards** — some prompts ask you to do something together. Accept with **💕 LET'S DO IT** or skip with **⏭️ SKIP FOR NOW**.
 - **Scoring deck** — Never Have I Ever lets both partners vote **✋ I HAVE** or **🙅 I HAVEN'T** on their own device, then reveals the tally with live score updates. If a vote is holding things up, the host can skip the card without scoring anyone.
 - **Drunk Desire safety note** — a small responsible-play reminder appears on the card itself.
-- **Real-time Party Mode** — for double dates: one host, everyone sees the same card. Guests dedup on rejoin via a persistent client ID, and duplicate names get auto-numbered.
+- **Real-time Party Mode** — one host, unlimited guests, everyone sees the same card. Guests dedup on rejoin via a persistent client ID, and duplicate names get auto-numbered.
+- **Shared leaderboard** — everyone can open 🏆 Scores to check their own standing. Only host and solo can reset scores.
 - **Dark mode** — Light, Dark, and System themes, saved per device, with no flash of light content on load.
-- **Hamburger deck selector on mobile** — full-width button opens a bottom sheet with the sweet and mature sections separated.
+- **Hamburger deck selector on mobile** — full-width button opens a bottom sheet with sweet and mature sections separated.
 - **Onboarding guide** — a 9-step tour on first open, reopenable anytime.
 - **Fully responsive** — tuned for phones, tablets, laptops, and landscape phones.
 - **Zero backend** — pure client-side, deploys anywhere static files are served.
@@ -86,7 +87,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 ### Deck selector on mobile
 
 <p align="center">
-  <img src="img/img-4.png" alt="Mobile bottom sheet showing Sweet and Mature sections with all eight decks" width="380">
+  <img src="img/img-4.png" alt="Mobile bottom sheet showing Sweet and Mature sections with all six decks" width="380">
 </p>
 
 <p align="center">
@@ -123,16 +124,6 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
   <em>The Drunk Desire deck shows a responsible-play reminder on every card: know your limits, never pressure your partner.</em>
 </p>
 
-### Never Have I Ever — scoring
-
-<p align="center">
-  <img src="img/img-9.png" alt="Never Have I Ever card with I HAVE and I HAVEN'T buttons" width="500">
-</p>
-
-<p align="center">
-  <em>Scoring cards show I HAVE and I HAVEN'T. Both partners vote on their own device in Party Mode, or on the same screen in solo.</em>
-</p>
-
 ### Party Mode host panel
 
 <p align="center">
@@ -140,7 +131,17 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 </p>
 
 <p align="center">
-  <em>Share the code, link, or QR for a double-date session. Everyone sees the same card in real time.</em>
+  <em>Share the code, link, or QR. Everyone sees the same card in real time.</em>
+</p>
+
+### Never Have I Ever — scoring
+
+<p align="center">
+  <img src="img/img-9.png" alt="Never Have I Ever card with I HAVE and I HAVEN'T buttons" width="500">
+</p>
+
+<p align="center">
+  <em>Scoring cards show I HAVE and I HAVEN'T. Each player votes on their own device in Party Mode, or both vote on the same screen in solo.</em>
 </p>
 
 ### Light and Dark mode
@@ -199,21 +200,21 @@ Solo mode works fully offline over `file://`.
 ## The Decks
 
 <p align="center">
-  <img src="img/img-11.png" alt="The ten game mode chips on desktop, split into sweet and mature groups" width="720">
+  <img src="img/img-11.png" alt="The eight game mode chips on desktop, split into sweet and mature groups" width="720">
 </p>
 
-| Deck              | Emoji | Count   | Style                                                      | Adult   | In Sweet Mix |
-| ----------------- | ----- | ------- | ---------------------------------------------------------- | ------- | ------------ |
-| Deep Talk         | 💗     | **165** | Tiered deep questions — Perception, Connection, Reflection | No      | ✅            |
-| Unboxed Us        | 📦     | 100     | Conversation + actionable dares                            | No      | ✅            |
-| Unboxed NG        | 🇳🇬     | 100     | Nigerian couple conversation                               | No      | ✅            |
-| Dares             | 🎭     | **200** | Intimate prompts — kiss, touch, whisper, reveal            | **18+** | ❌            |
-| Drunk Desire      | 🥃     | 100     | Drinking-game prompts                                      | **18+** | ❌            |
-| Never Have I Ever | 💬     | 100     | Couple confessions with finger scoring                     | **18+** | ❌            |
-| **Sweet Mix**     | 💕     | **365** | The three sweet decks shuffled together                    | No      | —            |
-| **Full Mix**      | 🔥     | **765** | Every deck shuffled together                               | **18+** | —            |
+| Deck              | Emoji | Count   | Style                                                    | Adult   | In Sweet Mix |
+| ----------------- | ----- | ------- | -------------------------------------------------------- | ------- | ------------ |
+| Deep Talk         | 💗     | **166** | Deep questions on perception, connection, and reflection | No      | ✅            |
+| Unboxed Us        | 📦     | 100     | Conversation + actionable dares                          | No      | ✅            |
+| Unboxed NG        | 🇳🇬     | 100     | Nigerian couple conversation                             | No      | ✅            |
+| Dares             | 🎭     | **200** | Intimate prompts — kiss, touch, whisper, reveal          | **18+** | ❌            |
+| Drunk Desire      | 🥃     | 100     | Drinking-game prompts                                    | **18+** | ❌            |
+| Never Have I Ever | 💬     | 100     | Couple confessions with finger scoring                   | **18+** | ❌            |
+| **Sweet Mix**     | 💕     | **366** | The three sweet decks shuffled together                  | No      | —            |
+| **Full Mix**      | 🔥     | **766** | Every deck shuffled together                             | **18+** | —            |
 
-> Internally the Deep Talk deck uses the key `wnrs`, since its tiered format was inspired by that style. The prompts are original.
+> Internally the Deep Talk deck uses the key `wnrs` for one of its source pools. The prompts are original.
 
 ### Card behaviour by type
 
@@ -232,7 +233,7 @@ Solo mode works fully offline over `file://`.
   <img src="img/img-5.png" alt="The three-checkbox consent modal for adult decks" width="420">
 </p>
 
-The four 18+ decks are gated. Selecting any of them — or **Full Mix** — triggers a consent modal before anything loads.
+The three 18+ decks are gated. Selecting any of them — or **Full Mix** — triggers a consent modal before anything loads.
 
 ### The gate
 
@@ -308,11 +309,11 @@ Two shuffle options sit at the top of the chip list and at the top of the deck s
 
 ### 💕 Sweet Mix
 
-Draws from the three sweet decks: Deep Talk, Unboxed Us, and Unboxed NG. **400 prompts total.** Safe for any mood, any time, any place.
+Draws from the three sweet decks: Deep Talk, Unboxed Us, and Unboxed NG. **366 prompts total.** Safe for any mood, any time, any place.
 
 ### 🔥 Full Mix
 
-Draws from all eight decks. **800 prompts total.** Triggers the 18+ consent gate the first time it's selected in a 24-hour window.
+Draws from all six decks. **766 prompts total.** Triggers the 18+ consent gate the first time it's selected in a 24-hour window.
 
 ```js
 const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
@@ -333,7 +334,7 @@ Never Have I Ever uses a different mechanic from the rest of the site.
 2. A prompt appears. Each taps **✋ I HAVE** or **🙅 I HAVEN'T**.
 3. When both have voted, **👁️ Reveal Answers** enables.
 4. The reveal shows who said what, and scores update: **each I HAVE drops a point.**
-5. The next card draws automatically when you tap it.
+5. Tap **Next Card** to move to the next prompt.
 
 ### On one device
 
@@ -341,7 +342,7 @@ The card shows two vote rows — one for **You**, one for **Partner**. Vote on e
 
 ### In Party Mode
 
-Each partner votes on their own device. The host's screen shows a live tally ("2 of 2 voted"), then reveals when everyone is in. Guests see the same breakdown and their own score.
+Each player votes on their own device. The host's screen shows a live tally ("2 of 2 voted"), then reveals when everyone is in. Guests see the same breakdown and can open the leaderboard to check their own score.
 
 ### Reset, skip, and deck switching
 
@@ -352,17 +353,17 @@ Each partner votes on their own device. The host's screen shows a live tally ("2
 
 ### Leaderboard
 
-Tap **🏆 Scores** to see everyone ranked, with a **Reset Scores** option. Guests can check their own score after the host reveals.
+Tap **🏆 Scores** to see everyone ranked. Host and solo devices get a **Reset Scores** button; guests see the ranking and their own score, but cannot reset. The whole table can only be reset by the host or by a solo player.
 
 ---
 
-## Party Mode (Double Dates)
+## Party Mode
 
 <p align="center">
   <img src="img/img-8.png" alt="Diagram showing two devices synced to the same card" width="620">
 </p>
 
-Party Mode uses WebRTC (via PeerJS) so two devices — or two couples on four devices — share the same card.
+Party Mode uses WebRTC (via PeerJS) so devices share the same card in real time.
 
 ### Hosting
 
@@ -419,7 +420,7 @@ A 9-step guide appears automatically on first open and can be reopened anytime.
 5. **Never Have I Ever** — how scoring works
 6. **Adult decks** — how the 18+ gate works
 7. **Drunk Desire** — responsible play reminder
-8. **Party Mode** — for double dates
+8. **Party Mode** — host and join
 9. **Theme and settings** — Light/Dark/System, sound, reset, consent clearing
 
 Reopen with the **❓** button in the header or the **How to play ❓** link in the footer.
@@ -481,7 +482,7 @@ Shortcuts are paused while the onboarding guide is open, while the deck sheet is
 
 ### Desktop and large tablets
 
-- Chips row at the top with all ten options (two mixes + eight decks).
+- Chips row at the top with all eight options (two mixes + six decks).
 - Adult chips have a red border tint.
 - Full-size card, both footer shortcut hints visible.
 
@@ -490,7 +491,7 @@ Shortcuts are paused while the onboarding guide is open, while the deck sheet is
 - Chips hidden, replaced by a full-width game selector bar with a staggered hamburger icon.
 - Tapping the bar opens a bottom sheet split into **Sweet 💕** and **Mature 18+** sections.
 - Each option shows its emoji, name, card count, and an 18+ badge where relevant.
-- Guests in Party Mode cannot open the sheet.
+- Guests in Party Mode cannot open the sheet — the host controls the deck.
 
 ### Small phones (≤560px)
 
@@ -584,8 +585,8 @@ const RAW = {
 
 ```js
 const DECKS = {
-  flamingo: { label: "Deep Talk", emoji: "🦩", color: "#EC4899", adult: false },
-  jenga:    { label: "Dares",     emoji: "🧱", color: "#DC2626", adult: true  },
+  deeptalk: { label: "Deep Talk", emoji: "💗", color: "#EC4899", adult: false },
+  dares:    { label: "Dares",     emoji: "🎭", color: "#DB2777", adult: true  },
   nhie:     { label: "Never Have I Ever", emoji: "💬", color: "#7C3AED", adult: true, scoring: true, startScore: 5 },
   // ...
 };
@@ -677,8 +678,9 @@ The host owns:
 - `state.votePhase` — `"voting"` or `"revealed"`
 - `state.isScoring` — whether the current deck uses scoring
 - `state.actionLocked` — brief lockout after Do/Skip to prevent double-draws
+- `state.pendingCard` — guest-side pause slot for the consent gate
 
-Guests mirror this via `applyRemoteState()`.
+Guests mirror this via `applyRemoteState()`. A local `myVoted` flag on guest devices tracks "have I voted on this card" independently of the synced `voters` array, so the vote pill doesn't flicker back when the host rebroadcasts.
 
 ### Consent state
 
@@ -777,6 +779,10 @@ Party Mode requires HTTPS (or `localhost`).
 
 - Reset clears scores, and so does switching decks. If you want to keep playing the same session, avoid hitting Reset or switching decks.
 
+**Guest can't see the leaderboard**
+
+- Guests can open 🏆 Scores on scoring cards. The Reset Scores button is host-only, so guests see the modal with a single Close action.
+
 **The hamburger selector doesn't show on mobile**
 
 - It appears at ≤1024px **and** in portrait orientation. Rotate to portrait.
@@ -802,12 +808,13 @@ Party Mode requires HTTPS (or `localhost`).
 
 - **Host-dependent Party Mode** — closing the host tab ends the room.
 - **No persistence** — refreshing the host starts a new room.
-- **No authentication** — 4-character codes are guessable. Fine for a private double date, not for public events.
+- **No authentication** — 4-character codes are guessable. Fine for a private session, not for public events.
 - **Consent is honour-based** — the gate is a good-faith check, not enforcement.
 - **Public PeerJS cloud** — subject to rate limits and occasional downtime.
 - **Sound and confetti are local** — each device reacts on its own.
 - **Theme is not synced** — each device picks its own Light/Dark/System.
 - **Scores are session-only** — nothing is written to `localStorage`, so a host refresh starts everyone back at 5.
+- **Scoring reveal doesn't auto-advance** — the host taps Next Card when ready.
 
 ---
 
@@ -870,3 +877,5 @@ The 18+ decks are intended for consensual adult play only. Neither the app nor i
 <p align="center">
   Enjoy each other. 💕
 </p>
+
+
