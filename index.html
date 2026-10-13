@@ -3914,6 +3914,7 @@
       haveBtn.disabled = false;
       haventBtn.disabled = false;
       revealBlock.hidden = true;
+      if (state.isScoring) revealBtn.disabled = true;
     }
 
     function showWelcome() {
@@ -3978,12 +3979,9 @@
 
         // Reveal button — host/solo only, enabled when all votes are in
         if (role === "solo" || role === "host") {
-          const allVoted = role === "solo"
-            ? state.voters.every(v => v.voted)
-            : (state.guests.length > 0 && state.guests.every(g => g.voted) && state.voters[0].voted);
           revealBtn.hidden = false;
           revealBtn.textContent = "👁️ Reveal Answers";
-          revealBtn.disabled = !allVoted || state.votePhase === "revealed";
+          updateRevealButton();
         } else {
           revealBtn.hidden = true;
         }
@@ -4149,10 +4147,7 @@
 
       document.querySelectorAll(`.vote-row-buttons button[data-voter="${voterId}"]`).forEach(b => b.disabled = true);
 
-      if (state.voters.every(v => v.voted)) {
-        revealBtn.disabled = false;
-      }
-
+      updateRevealButton();
       renderVoteStatus();
       broadcastState();
     }
@@ -4168,6 +4163,15 @@
         return;
       }
       castVote("you", value);
+    }
+
+    function updateRevealButton() {
+      if (role === "guest") return;
+      if (!state.isScoring) return;
+      const allVoted = role === "solo"
+        ? state.voters.every(v => v.voted)
+        : (state.voters[0].voted && state.guests.every(g => g.voted));
+      revealBtn.disabled = !allVoted || state.votePhase === "revealed";
     }
 
     function revealAnswers() {
@@ -4187,6 +4191,7 @@
       revealSound();
       burst(60);
 
+      updateRevealButton();
       renderReveal();
       renderVoteStatus();
       broadcastState();
@@ -4624,6 +4629,7 @@
               if (g && !g.voted) {
                 g.voted = true;
                 g.vote = data.value;
+                updateRevealButton();
                 renderVoteStatus();
                 broadcastState();
               }
