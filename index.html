@@ -2384,42 +2384,8 @@
         "If we met in every universe, how would you recognize me?",
         "What movie would our love story be?",
         "What is something you would like for us to try together?",
-        "What feeling is hardest for you to communicate to me?",
-        "How can I make it easier for you to open up?",
-        "What is the most attractive thing I do without realizing it?",
-        "What is one small way I can be a better partner?",
-        "What is the most romantic thing I have done recently?",
-        "What did you learn about love from your parents?",
         "What do you think our future home will smell like?",
-        "When did you first realize you loved me?",
-        "What is a fear you have about us that you have never said out loud?",
-        "What is a dream you have for us that you have not shared yet?",
-        "What is something you forgive me for that I do not know about?",
-        "What is the kindest thing I have ever done for you?",
-        "What does home mean to you, and am I part of it?",
-        "What is something you want to be remembered for in our relationship?",
-        "What part of our story do you wish you could relive?",
-        "What is one thing you want more of from me?",
-        "What is one thing you want less of from me?",
-        "What do you think we argue about that actually is not about that at all?",
-        "What is the last thing you think about before you fall asleep?",
-        "What is a thought you have at 2 a.m. that you never say in daylight?",
-        "What is something you are scared to tell me?",
-        "What is something you are excited to tell me but have not yet?",
         "What is a secret you have never told anyone but want to tell me?",
-        "What is the loneliest you have ever felt in a room full of people?",
-        "What is something you have been pretending not to care about?",
-        "What is something you need to hear from me but have not asked for?",
-        "What is a version of yourself you hide from me?",
-        "What is a version of yourself you wish I saw more often?",
-        "What is something you have never forgiven yourself for?",
-        "What is something you are proud of that you do not talk about?",
-        "What is a conversation you are avoiding with me?",
-        "What is a conversation you are avoiding with yourself?",
-        "What is the most vulnerable you have ever felt with me?",
-        "What is something you want to say to me but the timing never feels right?",
-        "What is a lie you told me early on that you want to confess now?",
-        "What is something you wish I asked you more often?",
         "What is something you wish you could ask me?",
         "What is a part of your past you want me to understand better?",
         "What is a part of your future you want me to be part of?",
@@ -3236,17 +3202,30 @@
       ]
     };
 
+
+    /* =========================================================
+   RAW SOURCES — maps each deck key to its source arrays.
+   Used by buildQueue() and deckCount() to support merged decks.
+   ========================================================= */
+
+    const RAW_SOURCES = {
+      deeptalk: ["wnrs", "flamingo"],
+      unboxed: ["unboxed"],
+      unboxedNg: ["unboxedNg"],
+      dares: ["jenga", "commands"],
+      desire: ["desire"],
+      nhie: ["nhie"]
+    };
+
     /* =========================================================
        2. CONFIG
        ========================================================= */
 
     const DECKS = {
-      flamingo: { label: "Flamingo Nights", emoji: "🦩", color: "#EC4899", adult: false },
+      deeptalk: { label: "Deep Talk", emoji: "💗", color: "#EC4899", adult: false },
       unboxed: { label: "Unboxed Us", emoji: "📦", color: "#F43F5E", adult: false },
       unboxedNg: { label: "Unboxed NG", emoji: "🇳🇬", color: "#F59E0B", adult: false },
-      wnrs: { label: "Heart to Heart", emoji: "💗", color: "#14B8A6", adult: false },
-      jenga: { label: "Dirty Jenga", emoji: "🧱", color: "#DC2626", adult: true },
-      commands: { label: "Sexy Commands", emoji: "🎭", color: "#DB2777", adult: true },
+      dares: { label: "Dares", emoji: "🎭", color: "#DB2777", adult: true },
       desire: { label: "Drunk Desire", emoji: "🥃", color: "#B45309", adult: true, drunk: true },
       nhie: { label: "Never Have I Ever", emoji: "💬", color: "#7C3AED", adult: true, scoring: true, startScore: 5 }
     };
@@ -3254,18 +3233,16 @@
     const FILTERS = [
       { key: "sweetmix", label: "💕 Sweet Mix", short: "Sweet Mix", adult: false, mix: "sweet" },
       { key: "fullmix", label: "🔥 Full Mix", short: "Full Mix", adult: true, mix: "full" },
-      { key: "flamingo", label: "🦩 Flamingo Nights", short: "Flamingo Nights", adult: false },
+      { key: "deeptalk", label: "💗 Deep Talk", short: "Deep Talk", adult: false },
       { key: "unboxed", label: "📦 Unboxed Us", short: "Unboxed Us", adult: false },
       { key: "unboxedNg", label: "🇳🇬 Unboxed NG", short: "Unboxed NG", adult: false },
-      { key: "wnrs", label: "💗 Heart to Heart", short: "Heart to Heart", adult: false },
-      { key: "jenga", label: "🧱 Dirty Jenga", short: "Dirty Jenga", adult: true },
-      { key: "commands", label: "🎭 Sexy Commands", short: "Sexy Commands", adult: true },
+      { key: "dares", label: "🎭 Dares", short: "Dares", adult: true },
       { key: "desire", label: "🥃 Drunk Desire", short: "Drunk Desire", adult: true },
       { key: "nhie", label: "💬 Never Have I Ever", short: "Never Have I Ever", adult: true, scoring: true }
     ];
 
-    const SWEET_MIX_DECKS = ["flamingo", "unboxed", "unboxedNg", "wnrs"];
-    const FULL_MIX_DECKS = ["flamingo", "unboxed", "unboxedNg", "wnrs", "jenga", "commands", "desire", "nhie"];
+    const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
+    const FULL_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg", "dares", "desire", "nhie"];
 
     const STORAGE_KEY = "usTwo.v1";
     const INTRO_KEY = "usTwo.introSeen";
@@ -3410,7 +3387,10 @@
     }
 
     function deckCount(key) {
-      return decksForFilter(key).reduce((sum, k) => sum + (RAW[k] ? RAW[k].length : 0), 0);
+      return decksForFilter(key).reduce((sum, k) => {
+        const rawKeys = RAW_SOURCES[k] || [k];
+        return sum + rawKeys.reduce((s, rk) => s + ((RAW[rk] || []).length), 0);
+      }, 0);
     }
 
     function isAdultFilter(key) {
@@ -3625,7 +3605,7 @@
       {
         emoji: "💕",
         title: "Welcome to Us Two",
-        body: "Eight decks, 800 prompts, made just for the two of you. Conversation, gratitude, actions, and — behind an 18+ gate — spicier content plus a Never Have I Ever scoring game."
+        body: "Six decks, 765 prompts, made just for the two of you.Conversation, gratitude, actions, and — behind an 18+ gate — spicier content plus a Never Have I Ever scoring game."
       },
       {
         emoji: "🎴",
@@ -3650,7 +3630,7 @@
       {
         emoji: "🔞",
         title: "5. Adult decks",
-        body: "Dirty Jenga, Sexy Commands, Drunk Desire, and Never Have I Ever are 18+ and gated behind a consent check. They are never mixed into Sweet Mix."
+        body: "Dares, Drunk Desire, and Never Have I Ever are 18+ and gated behind a consent check. They are never mixed into Sweet Mix."
       },
       {
         emoji: "🥃",
@@ -3895,10 +3875,14 @@
       const keys = decksForFilter(state.filter);
       let pool = [];
       keys.forEach(k => {
-        RAW[k].forEach(raw => pool.push(normalizeItem(raw, k)));
+        const rawKeys = RAW_SOURCES[k] || [k];
+        rawKeys.forEach(rk => {
+          (RAW[rk] || []).forEach(raw => pool.push(normalizeItem(raw, k)));
+        });
       });
       state.queue = shuffle(pool);
     }
+
 
     function updateStats() {
       const remaining = role === "guest" && remoteRemaining !== null ? remoteRemaining : state.queue.length;

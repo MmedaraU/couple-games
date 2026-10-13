@@ -55,7 +55,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 
 ## Features
 
-- **800 prompts** across eight decks — four sweet decks, three adult decks (18+), and one scoring deck (18+).
+- **765 prompts** across six decks — three sweet decks, two adult decks (18+), and one scoring deck (18+).
 - **Consent gate for adult content** — a three-checkbox agreement appears before any mature deck, remembered for 24 hours and clearable anytime. In Party Mode, each guest confirms on their own device before any adult card renders.
 - **Sweet Mix and Full Mix** — one safe shuffle, one that includes everything.
 - **Action cards** — some prompts ask you to do something together. Accept with **💕 LET'S DO IT** or skip with **⏭️ SKIP FOR NOW**.
@@ -110,7 +110,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 </p>
 
 <p align="center">
-  <em>Action cards from Unboxed Us, Dirty Jenga, and Sexy Commands show both buttons. Skipping is always free.</em>
+  <em>Action cards from Unboxed Us and Dares show both buttons. Skipping is always free.</em>
 </p>
 
 ### Drunk Desire safety note
@@ -204,27 +204,25 @@ Solo mode works fully offline over `file://`.
 
 | Deck              | Emoji | Count   | Style                                                      | Adult   | In Sweet Mix |
 | ----------------- | ----- | ------- | ---------------------------------------------------------- | ------- | ------------ |
-| Flamingo Nights   | 🦩     | 100     | Deep conversation + playful dilemmas                       | No      | ✅            |
+| Deep Talk         | 💗     | **165** | Tiered deep questions — Perception, Connection, Reflection | No      | ✅            |
 | Unboxed Us        | 📦     | 100     | Conversation + actionable dares                            | No      | ✅            |
 | Unboxed NG        | 🇳🇬     | 100     | Nigerian couple conversation                               | No      | ✅            |
-| Heart to Heart    | 💗     | 100     | Tiered deep questions — Perception, Connection, Reflection | No      | ✅            |
-| Dirty Jenga       | 🧱     | 100     | Jenga-block style dares and questions                      | **18+** | ❌            |
-| Sexy Commands     | 🎭     | 100     | Simon-Says style intimate commands                         | **18+** | ❌            |
+| Dares             | 🎭     | **200** | Intimate prompts — kiss, touch, whisper, reveal            | **18+** | ❌            |
 | Drunk Desire      | 🥃     | 100     | Drinking-game prompts                                      | **18+** | ❌            |
 | Never Have I Ever | 💬     | 100     | Couple confessions with finger scoring                     | **18+** | ❌            |
-| **Sweet Mix**     | 💕     | **400** | The four sweet decks shuffled together                     | No      | —            |
-| **Full Mix**      | 🔥     | **800** | Every deck shuffled together                               | **18+** | —            |
+| **Sweet Mix**     | 💕     | **365** | The three sweet decks shuffled together                    | No      | —            |
+| **Full Mix**      | 🔥     | **765** | Every deck shuffled together                               | **18+** | —            |
 
-> Internally the Heart to Heart deck uses the key `wnrs`, since its tiered format was inspired by that style. The prompts are original.
+> Internally the Deep Talk deck uses the key `wnrs`, since its tiered format was inspired by that style. The prompts are original.
 
 ### Card behaviour by type
 
-| Type                 | Deck(s)                                                         | Buttons shown                                    |
-| -------------------- | --------------------------------------------------------------- | ------------------------------------------------ |
-| Plain                | Flamingo Nights, Unboxed NG, Heart to Heart, most of Unboxed Us | None                                             |
-| Action               | Unboxed Us (partly), Dirty Jenga, Sexy Commands                 | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW                   |
-| Action + safety note | Drunk Desire                                                    | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW · safety reminder |
-| Scoring              | Never Have I Ever                                               | ✋ I HAVE · 🙅 I HAVEN'T                           |
+| Type                 | Deck(s)                                   | Buttons shown                                    |
+| -------------------- | ----------------------------------------- | ------------------------------------------------ |
+| Plain                | Deep Talk, Unboxed NG, most of Unboxed Us | None                                             |
+| Action               | Unboxed Us (partly), Dares                | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW                   |
+| Action + safety note | Drunk Desire                              | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW · safety reminder |
+| Scoring              | Never Have I Ever                         | ✋ I HAVE · 🙅 I HAVEN'T                           |
 
 ---
 
@@ -310,15 +308,15 @@ Two shuffle options sit at the top of the chip list and at the top of the deck s
 
 ### 💕 Sweet Mix
 
-Draws from the four sweet decks: Flamingo Nights, Unboxed Us, Unboxed NG, and Heart to Heart. **400 prompts total.** Safe for any mood, any time, any place.
+Draws from the three sweet decks: Deep Talk, Unboxed Us, and Unboxed NG. **400 prompts total.** Safe for any mood, any time, any place.
 
 ### 🔥 Full Mix
 
 Draws from all eight decks. **800 prompts total.** Triggers the 18+ consent gate the first time it's selected in a 24-hour window.
 
 ```js
-const SWEET_MIX_DECKS = ["flamingo", "unboxed", "unboxedNg", "wnrs"];
-const FULL_MIX_DECKS  = ["flamingo", "unboxed", "unboxedNg", "wnrs", "jenga", "commands", "desire", "nhie"];
+const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
+const FULL_MIX_DECKS  = ["deeptalk", "unboxed", "unboxedNg", "dares", "desire", "nhie"];
 ```
 
 To change what goes into either mix, edit those two arrays.
@@ -586,8 +584,8 @@ const RAW = {
 
 ```js
 const DECKS = {
-  flamingo: { label: "Flamingo Nights", emoji: "🦩", color: "#EC4899", adult: false },
-  jenga:    { label: "Dirty Jenga",     emoji: "🧱", color: "#DC2626", adult: true  },
+  flamingo: { label: "Deep Talk", emoji: "🦩", color: "#EC4899", adult: false },
+  jenga:    { label: "Dares",     emoji: "🧱", color: "#DC2626", adult: true  },
   nhie:     { label: "Never Have I Ever", emoji: "💬", color: "#7C3AED", adult: true, scoring: true, startScore: 5 },
   // ...
 };
@@ -606,8 +604,8 @@ desire: { label: "Drunk Desire", emoji: "🥃", color: "#B45309", adult: true, d
 ### Change what goes into Sweet Mix or Full Mix
 
 ```js
-const SWEET_MIX_DECKS = ["flamingo", "unboxed", "unboxedNg", "wnrs"];
-const FULL_MIX_DECKS  = ["flamingo", "unboxed", "unboxedNg", "wnrs", "jenga", "commands", "desire", "nhie"];
+const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
+const FULL_MIX_DECKS  = ["deeptalk", "unboxed", "unboxedNg", "dares", "desire", "nhie"];
 ```
 
 ### Change the consent duration
@@ -767,7 +765,7 @@ Party Mode requires HTTPS (or `localhost`).
 
 **Action buttons don't appear**
 
-- Only cards from Unboxed Us, Dirty Jenga, and Sexy Commands have buttons. All other decks are plain prompts or scoring cards.
+- Only cards from Unboxed Us and Dares have buttons. All other decks are plain prompts or scoring cards.
 
 **Never Have I Ever reveal won't enable**
 
