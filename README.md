@@ -1,7 +1,7 @@
 # 💕 Us Two
 
 <p align="center">
-  <img src="img/img-1.png" alt="Us Two — 766 prompts across six decks for couples" width="800">
+  <img src="img/img-1.png" alt="Us Two — 946 prompts across seven decks for couples" width="800">
 </p>
 
 <p align="center">
@@ -55,9 +55,11 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 
 ## Features
 
-- **766 prompts** across six decks — three sweet decks, two adult decks (18+), and one scoring deck (18+).
+- **946 prompts** across seven decks — four sweet decks, two adult decks (18+), and one scoring deck (18+).
 - **Consent gate for adult content** — a three-checkbox agreement appears before any mature deck, remembered for 24 hours and clearable anytime. In Party Mode, each device confirms independently before any adult card renders.
-- **Sweet Mix and Full Mix** — one safe shuffle, one that includes everything.
+- **Sweet Mix and Spicy Mix** — one safe shuffle for cozy nights, one that strictly pulls from the 18+ decks for spicier nights.
+- **Before We Leap** — a dedicated 100-prompt deck built on Christian premarital counseling and Esther Perel’s relationship frameworks to tackle marriage, parenting, and family boundaries.
+- **Deep Conflict Resolution** — 80 new Unboxed Us prompts designed to expose resentment, handle arguments, and align love languages.
 - **Action cards** — some prompts ask you to do something together. Accept with **💕 LET'S DO IT** or skip with **⏭️ SKIP FOR NOW**.
 - **Scoring deck** — Never Have I Ever lets both partners vote **✋ I HAVE** or **🙅 I HAVEN'T** on their own device, then reveals the tally with live score updates. If a vote is holding things up, the host can skip the card without scoring anyone.
 - **Drunk Desire safety note** — a small responsible-play reminder appears on the card itself.
@@ -87,7 +89,7 @@ Built as one HTML file with zero build steps, zero backend, and zero accounts. D
 ### Deck selector on mobile
 
 <p align="center">
-  <img src="img/img-4.png" alt="Mobile bottom sheet showing Sweet and Mature sections with all six decks" width="380">
+  <img src="img/img-4.png" alt="Mobile bottom sheet showing Sweet and Mature sections with all seven decks" width="380">
 </p>
 
 <p align="center">
@@ -200,30 +202,31 @@ Solo mode works fully offline over `file://`.
 ## The Decks
 
 <p align="center">
-  <img src="img/img-11.png" alt="The eight game mode chips on desktop, split into sweet and mature groups" width="720">
+  <img src="img/img-11.png" alt="The nine game mode chips on desktop, split into sweet and mature groups" width="720">
 </p>
 
 | Deck              | Emoji | Count   | Style                                                    | Adult   | In Sweet Mix |
 | ----------------- | ----- | ------- | -------------------------------------------------------- | ------- | ------------ |
 | Deep Talk         | 💗     | **166** | Deep questions on perception, connection, and reflection | No      | ✅            |
-| Unboxed Us        | 📦     | 100     | Conversation + actionable dares                          | No      | ✅            |
+| Unboxed Us        | 📦     | **180** | Conversation, conflict resolution, love languages        | No      | ✅            |
 | Unboxed NG        | 🇳🇬     | 100     | Nigerian couple conversation                             | No      | ✅            |
+| Before We Leap    | 💍     | 100     | Premarital & parenting questions (Christian & Perel)     | No      | ✅            |
 | Dares             | 🎭     | **200** | Intimate prompts — kiss, touch, whisper, reveal          | **18+** | ❌            |
 | Drunk Desire      | 🥃     | 100     | Drinking-game prompts                                    | **18+** | ❌            |
 | Never Have I Ever | 💬     | 100     | Couple confessions with finger scoring                   | **18+** | ❌            |
-| **Sweet Mix**     | 💕     | **366** | The three sweet decks shuffled together                  | No      | —            |
-| **Full Mix**      | 🔥     | **766** | Every deck shuffled together                             | **18+** | —            |
+| **Sweet Mix**     | 💕     | **546** | The four sweet decks shuffled together                   | No      | —            |
+| **Spicy Mix**     | 🔥     | **400** | The three 18+ decks shuffled together                    | **18+** | —            |
 
 > Internally the Deep Talk deck uses the key `wnrs` for one of its source pools. The prompts are original.
 
 ### Card behaviour by type
 
-| Type                 | Deck(s)                                   | Buttons shown                                    |
-| -------------------- | ----------------------------------------- | ------------------------------------------------ |
-| Plain                | Deep Talk, Unboxed NG, most of Unboxed Us | None                                             |
-| Action               | Unboxed Us (partly), Dares                | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW                   |
-| Action + safety note | Drunk Desire                              | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW · safety reminder |
-| Scoring              | Never Have I Ever                         | ✋ I HAVE · 🙅 I HAVEN'T                           |
+| Type                 | Deck(s)                                                   | Buttons shown                                    |
+| -------------------- | --------------------------------------------------------- | ------------------------------------------------ |
+| Plain                | Deep Talk, Unboxed NG, Before We Leap, most of Unboxed Us | None                                             |
+| Action               | Unboxed Us (partly), Dares                                | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW                   |
+| Action + safety note | Drunk Desire                                              | 💕 LET'S DO IT · ⏭️ SKIP FOR NOW · safety reminder |
+| Scoring              | Never Have I Ever                                         | ✋ I HAVE · 🙅 I HAVEN'T                           |
 
 ---
 
@@ -233,7 +236,7 @@ Solo mode works fully offline over `file://`.
   <img src="img/img-5.png" alt="The three-checkbox consent modal for adult decks" width="420">
 </p>
 
-The three 18+ decks are gated. Selecting any of them — or **Full Mix** — triggers a consent modal before anything loads.
+The three 18+ decks are gated. Selecting any of them — or **Spicy Mix** — triggers a consent modal before anything loads.
 
 ### The gate
 
@@ -304,20 +307,20 @@ A few things worth stating plainly, since these decks deal with intimacy and alc
 Two shuffle options sit at the top of the chip list and at the top of the deck sheet.
 
 <p align="center">
-  <img src="img/img-11.png" alt="The Sweet Mix and Full Mix chips side by side" width="600">
+  <img src="img/img-11.png" alt="The Sweet Mix and Spicy Mix chips side by side" width="600">
 </p>
 
 ### 💕 Sweet Mix
 
-Draws from the three sweet decks: Deep Talk, Unboxed Us, and Unboxed NG. **366 prompts total.** Safe for any mood, any time, any place.
+Draws from the four sweet decks: Deep Talk, Unboxed Us, Unboxed NG, and Before We Leap. **546 prompts total.** Safe for any mood, any time, any place.
 
-### 🔥 Full Mix
+### 🔥 Spicy Mix
 
-Draws from all six decks. **766 prompts total.** Triggers the 18+ consent gate the first time it's selected in a 24-hour window.
+Draws from the three 18+ decks: Dares, Drunk Desire, and Never Have I Ever. **400 prompts total.** Triggers the 18+ consent gate the first time it's selected in a 24-hour window.
 
 ```js
-const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
-const FULL_MIX_DECKS  = ["deeptalk", "unboxed", "unboxedNg", "dares", "desire", "nhie"];
+const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg", "beforeweLeap"];
+const SPICY_MIX_DECKS = ["dares", "desire", "nhie"];
 ```
 
 To change what goes into either mix, edit those two arrays.
@@ -388,7 +391,7 @@ Each guest has a persistent client ID saved in `localStorage`. If they refresh, 
 - Deck tag and accent colour
 - Drawn / done / skipped counters
 - Remaining cards in the deck
-- Selected mode (Sweet Mix, Full Mix, or a single deck)
+- Selected mode (Sweet Mix, Spicy Mix, or a single deck)
 - Scoring votes and leaderboard
 
 ### What does *not* sync
@@ -452,7 +455,7 @@ Us Two ships with three theme states, cycled by the theme button in the header:
 
 ### What stays consistent
 
-- Deck accent colours (rose, plum, coral, gold) are unchanged across themes — they're the deck's identity and read fine on both backgrounds.
+- Deck accent colours (rose, plum, coral, gold, teal) are unchanged across themes — they're the deck's identity and read fine on both backgrounds.
 - The QR code panel stays light in dark mode, because QR scanners need high contrast.
 - Sound, confetti, and Party Mode sync are unaffected.
 
@@ -482,7 +485,7 @@ Shortcuts are paused while the onboarding guide is open, while the deck sheet is
 
 ### Desktop and large tablets
 
-- Chips row at the top with all eight options (two mixes + six decks).
+- Chips row at the top with all nine options (two mixes + seven decks).
 - Adult chips have a red border tint.
 - Full-size card, both footer shortcut hints visible.
 
@@ -586,6 +589,7 @@ const RAW = {
 ```js
 const DECKS = {
   deeptalk: { label: "Deep Talk", emoji: "💗", color: "#EC4899", adult: false },
+  beforeweLeap: { label: "Before We Leap", emoji: "💍", color: "#0D9488", adult: false },
   dares:    { label: "Dares",     emoji: "🎭", color: "#DB2777", adult: true  },
   nhie:     { label: "Never Have I Ever", emoji: "💬", color: "#7C3AED", adult: true, scoring: true, startScore: 5 },
   // ...
@@ -602,11 +606,11 @@ desire: { label: "Drunk Desire", emoji: "🥃", color: "#B45309", adult: true, d
 
 `drunk: true` displays the safety note on every card from that deck.
 
-### Change what goes into Sweet Mix or Full Mix
+### Change what goes into Sweet Mix or Spicy Mix
 
 ```js
-const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg"];
-const FULL_MIX_DECKS  = ["deeptalk", "unboxed", "unboxedNg", "dares", "desire", "nhie"];
+const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg", "beforeweLeap"];
+const SPICY_MIX_DECKS = ["dares", "desire", "nhie"];
 ```
 
 ### Change the consent duration
@@ -877,5 +881,3 @@ The 18+ decks are intended for consensual adult play only. Neither the app nor i
 <p align="center">
   Enjoy each other. 💕
 </p>
-
-
