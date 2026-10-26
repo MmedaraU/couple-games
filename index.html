@@ -1015,6 +1015,12 @@
       border-radius: 14px
     }
 
+    [data-theme="dark"] .waiting {
+      background: #26161e;
+      border-color: rgba(255, 255, 255, .12);
+      color: #c9a6b3;
+    }
+
     footer {
       display: flex;
       flex-direction: column;
@@ -1262,7 +1268,13 @@
     .leaderboard {
       display: flex;
       flex-direction: column;
-      gap: 8px
+      gap: 8px;
+      max-height: 50vh;
+      /* NEW: Prevents modal overflow */
+      overflow-y: auto;
+      /* NEW: Makes it scrollable */
+      padding-right: 4px;
+      /* NEW */
     }
 
     .lb-row {
@@ -2324,8 +2336,10 @@
     <div class="controls" id="controls">
       <button class="btn primary" id="nextBtn">Next Card →</button>
       <button class="btn ghost" id="leaderBtn" hidden>🏆 Scores</button>
+      <button class="btn ghost" id="endGameBtn" hidden>🏁 Finish Game</button>
       <button class="btn ghost" id="resetBtn">Reset</button>
     </div>
+
     <div class="waiting" id="waitingNote" hidden>Waiting for the host to draw the next card…</div>
   </main>
 
@@ -2370,7 +2384,7 @@
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
   <script>
     /* =========================================================
-       1. THE DECKS  (766 prompts total)
+       1. THE DECKS  (see GRAND_TOTAL — computed from deckCount())
        ========================================================= */
 
     const RAW = {
@@ -3324,14 +3338,13 @@
 
     const RAW_SOURCES = {
       deeptalk: ["wnrs", "flamingo"],
-      unboxed: ["unboxed"],
-      unboxedNg: ["unboxedNg"],
+      // CHANGED: Merged unboxedNg into unboxed
+      unboxed: ["unboxed", "unboxedNg"],
       beforeweLeap: ["beforeweLeap"],
       dares: ["jenga", "commands"],
       desire: ["desire"],
       nhie: ["nhie"]
     };
-
     /* =========================================================
        2. CONFIG
        ========================================================= */
@@ -3339,7 +3352,6 @@
     const DECKS = {
       deeptalk: { label: "Deep Talk", emoji: "💗", color: "#EC4899", adult: false },
       unboxed: { label: "Unboxed Us", emoji: "📦", color: "#F43F5E", adult: false },
-      unboxedNg: { label: "Unboxed NG", emoji: "🇳🇬", color: "#F59E0B", adult: false },
       beforeweLeap: { label: "Before We Leap", emoji: "💍", color: "#0D9488", adult: false },
       dares: { label: "Dares", emoji: "🎭", color: "#DB2777", adult: true },
       desire: { label: "Drunk Desire", emoji: "🥃", color: "#B45309", adult: true, drunk: true },
@@ -3351,14 +3363,13 @@
       { key: "spicymix", label: "🔥 Spicy Mix", short: "Spicy Mix", adult: true, mix: "spicy" },
       { key: "deeptalk", label: "💗 Deep Talk", short: "Deep Talk", adult: false },
       { key: "unboxed", label: "📦 Unboxed Us", short: "Unboxed Us", adult: false },
-      { key: "unboxedNg", label: "🇳🇬 Unboxed NG", short: "Unboxed NG", adult: false },
       { key: "beforeweLeap", label: "💍 Before We Leap", short: "Before We Leap", adult: false },
       { key: "dares", label: "🎭 Dares", short: "Dares", adult: true },
       { key: "desire", label: "🥃 Drunk Desire", short: "Drunk Desire", adult: true },
       { key: "nhie", label: "💬 Never Have I Ever", short: "Never Have I Ever", adult: true, scoring: true }
     ];
 
-    const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "unboxedNg", "beforeweLeap"];
+    const SWEET_MIX_DECKS = ["deeptalk", "unboxed", "beforeweLeap"];
     const SPICY_MIX_DECKS = ["dares", "desire", "nhie"];
 
     const STORAGE_KEY = "usTwo.v1";
@@ -3413,6 +3424,7 @@
     const helpBtn = document.getElementById("helpBtn");
     const helpLink = document.getElementById("helpLink");
     const themeBtn = document.getElementById("themeBtn");
+    const endGameBtn = document.getElementById("endGameBtn");
 
     const gameSelect = document.getElementById("gameSelect");
     const gameSelectEmoji = document.getElementById("gameSelectEmoji");
@@ -3451,7 +3463,8 @@
       votePhase: "voting",
       isScoring: false,
       actionLocked: false,
-      pendingCard: null
+      pendingCard: null,
+      gameOver: false // NEW
     };
 
     let role = "solo";
@@ -3719,12 +3732,12 @@
     /* =========================================================
        8. ONBOARDING
        ========================================================= */
-
+    const GRAND_TOTAL = Object.keys(DECKS).reduce((sum, k) => sum + deckCount(k), 0);
     const INTRO_STEPS = [
       {
         emoji: "💕",
         title: "Welcome to Us Two",
-        body: "Seven decks, 866 prompts, made just for the two of you. Conversation, gratitude, actions, and — behind an 18+ gate — spicier content plus a Never Have I Ever scoring game."
+        body: `${GRAND_TOTAL} prompts across seven decks, made just for the two of you. Conversation, gratitude, actions, and — behind an 18+ gate — spicier content including a Never Have I Ever scoring deck.`
       },
       {
         emoji: "🎴",
@@ -4059,6 +4072,7 @@
       opts = opts || {};
       const deck = DECKS[item.deck];
 
+      // Set card colors and tag
       cardEl.style.setProperty("--accent", deck.color);
       cardEl.classList.toggle("adult", !!deck.adult);
 
@@ -4067,6 +4081,7 @@
       if (deck.scoring) badges.push('<span class="badge-score">SCORING</span>');
       tagEl.innerHTML = `${deck.emoji}  ${deck.label}${badges.length ? ' ' + badges.join(' ') : ''}`;
 
+      // Set card text (REMOVED personalize to prevent crash)
       qEl.className = "q";
       qEl.textContent = item.text;
 
@@ -4076,25 +4091,25 @@
       if (isScoring) {
         choices.hidden = true;
 
+        // Pick exactly one voting UI per role
         if (role === "solo") {
-          coupleVote.hidden = false;
-          scoringChoices.hidden = true;
+          scoringChoices.hidden = true;      // hide the single-vote pair
+          coupleVote.hidden = false;         // show the two-row You/Partner UI
           leaderBtn.hidden = false;
         } else if (role === "host") {
-          coupleVote.hidden = true;
           scoringChoices.hidden = false;
-          haveBtn.disabled = state.voters[0].voted;
-          haventBtn.disabled = state.voters[0].voted;
+          coupleVote.hidden = true;
           leaderBtn.hidden = false;
+          haveBtn.disabled = state.gameOver || state.voters[0].voted;
+          haventBtn.disabled = state.gameOver || state.voters[0].voted;
         } else {
-          coupleVote.hidden = true;
           scoringChoices.hidden = false;
-          haveBtn.disabled = myVoted;
-          haventBtn.disabled = myVoted;
+          coupleVote.hidden = true;
           leaderBtn.hidden = false;
+          haveBtn.disabled = state.gameOver || myVoted;
+          haventBtn.disabled = state.gameOver || myVoted;
         }
 
-        // Reveal button — host/solo only, enabled when all votes are in
         if (role === "solo" || role === "host") {
           revealBtn.hidden = false;
           revealBtn.textContent = "👁️ Reveal Answers";
@@ -4103,7 +4118,6 @@
           revealBtn.hidden = true;
         }
 
-        // Skip button — host/solo only, shown while voting
         if ((role === "solo" || role === "host") && state.votePhase === "voting") {
           skipCardBtn.hidden = false;
         } else {
@@ -4118,9 +4132,9 @@
         }
 
         scoringActions.hidden = revealBtn.hidden && skipCardBtn.hidden;
-
         renderVoteStatus();
         safetyNote.hidden = true;
+
       } else {
         coupleVote.hidden = true;
         scoringChoices.hidden = true;
@@ -4132,8 +4146,18 @@
 
         choices.hidden = item.kind !== "action";
         revealBtn.hidden = true;
-
         safetyNote.hidden = !deck.drunk;
+      }
+
+      if ((role === "host" || role === "solo") && state.guests.length > 0) {
+        endGameBtn.hidden = false;
+      } else {
+        endGameBtn.hidden = true;
+      }
+
+      if (role !== "guest") {
+        controls.style.opacity = state.gameOver ? "0.2" : "1";
+        controls.style.pointerEvents = state.gameOver ? "none" : "auto";
       }
 
       if (opts.animate !== false) animateCard();
@@ -4204,6 +4228,7 @@
        ========================================================= */
 
     function drawCard() {
+      if (state.gameOver) return;
       if (state.actionLocked) return;
       if (role === "guest") { sendToHost({ type: "action", action: "next" }); return; }
       if (state.queue.length === 0) {
@@ -4224,6 +4249,7 @@
     }
 
     function chooseDo() {
+      if (state.gameOver) return;
       if (state.actionLocked) return;
       if (role === "guest") { sendToHost({ type: "action", action: "do" }); toast("Sent to host 💕"); return; }
       if (!state.current) return;
@@ -4240,6 +4266,7 @@
     }
 
     function chooseSkip() {
+      if (state.gameOver) return;
       if (state.actionLocked) return;
       if (role === "guest") { sendToHost({ type: "action", action: "skip" }); toast("Sent to host ⏭️"); return; }
       if (!state.current) return;
@@ -4255,6 +4282,7 @@
     }
 
     function castVote(voterId, value) {
+      if (state.gameOver) return;
       const voter = state.voters.find(v => v.id === voterId);
       if (!voter || voter.voted) return;
       voter.voted = true;
@@ -4294,6 +4322,7 @@
     }
 
     function revealAnswers() {
+      if (state.gameOver) return;
       if (role === "guest") return;
       if (!state.isScoring) return;
       if (state.votePhase === "revealed") return;
@@ -4326,6 +4355,7 @@
     }
 
     function skipScoringCard() {
+      if (state.gameOver) return;
       if (role === "guest") return;
       if (state.actionLocked) return;
       if (!state.isScoring) return;
@@ -4340,6 +4370,68 @@
         state.actionLocked = false;
         drawCard();
       }, 200);
+    }
+
+    function endGame() {
+      if (role === "guest") return;
+      state.gameOver = true;
+      broadcastState();
+      showSummary();
+      revealSound();
+      burst(100);
+    }
+
+    function showSummary() {
+      // Include both players in solo mode, or host + guests in party mode
+      const allPlayers = role === "solo"
+        ? state.voters
+        : [state.voters[0], ...state.guests];
+
+      const sorted = allPlayers.sort((a, b) => b.score - a.score);
+      const top1 = sorted[0];
+      const top2 = sorted[1];
+
+      let content = "";
+
+      if (top1 && top2 && top1.score === top2.score) {
+        content = `
+      <div style="text-align:center; padding: 20px 0;">
+        <div style="font-size: 3rem; margin-bottom: 10px;">💕</div>
+        <h3 style="color: var(--rose); font-size: 1.4rem;">Perfectly Matched</h3>
+        <p style="font-size: 1.1rem; font-weight: 800;">You both scored ${top1.score} points.</p>
+        <p>You know each other incredibly well.</p>
+      </div>
+    `;
+      } else {
+        const winner = top1 || { name: "Nobody", score: 5 };
+        const runnerUp = top2 || { name: "Nobody", score: 5 };
+
+        content = `
+      <div style="text-align:center; padding: 20px 0;">
+        <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
+        <h3 style="color: var(--rose); font-size: 1.4rem;">Most Innocent</h3>
+        <p style="font-size: 1.1rem; font-weight: 800;">${winner.name} (${winner.score} pts)</p>
+        <div style="margin-top: 20px; font-size: 2rem;">😈</div>
+        <h3 style="color: var(--plum); font-size: 1.4rem;">Most Adventurous</h3>
+        <p style="font-size: 1.1rem; font-weight: 800;">${runnerUp.name} (${runnerUp.score} pts)</p>
+      </div>
+    `;
+      }
+
+      openModal(`
+    <h2 style="text-align:center; font-size: 1.6rem;">Game Over</h2>
+    ${content}
+    <div class="modal-actions">
+      <button class="btn primary" id="mPlayAgain">Play Again</button>
+      <button class="btn ghost" id="mClose">Close</button>
+    </div>
+  `);
+
+      document.getElementById("mClose").onclick = closeModal;
+      document.getElementById("mPlayAgain").onclick = () => {
+        closeModal();
+        resetGame();
+      };
     }
 
     function showLeaderboard() {
@@ -4387,16 +4479,36 @@
 
     function resetGame() {
       if (role === "guest") return;
+
+      state.gameOver = false; // Clears the end-game state
       state.drawn = 0;
       state.doCount = 0;
       state.skipCount = 0;
       state.current = null;
       state.pendingCard = null;
+
+      // REMOVED: revealed = false; and hintRevealed = false; (they don't exist in Us Two)
+
+      state.votePhase = "voting";
       state.actionLocked = false;
       myVoted = false;
-      resetVotes();
-      state.voters.forEach(v => { v.score = 5; });
-      state.guests.forEach(g => { g.score = 5; });
+
+      // Reset voters and guests back to 5 points
+      state.voters.forEach(v => {
+        v.voted = false;
+        v.vote = null;
+        v.score = 5;
+      });
+      state.guests.forEach(g => {
+        g.voted = false;
+        g.vote = null;
+        g.score = 5;
+      });
+
+      // Undo any dimming from the "Finish Game" state
+      controls.style.opacity = "1";
+      controls.style.pointerEvents = "auto";
+
       buildQueue();
       showWelcome();
       toast("Deck reset — scores cleared 🔄");
@@ -4406,7 +4518,10 @@
     function applyFilter(key) {
       if (role === "guest") return;
       if (state.filter === key) return;
+
       state.filter = key;
+      state.gameOver = false;                 // Fix: clear game over state
+
       buildQueue();
       state.current = null;
       state.pendingCard = null;
@@ -4415,12 +4530,17 @@
       state.skipCount = 0;
       state.actionLocked = false;
       myVoted = false;
+
       resetVotes();
       state.voters.forEach(v => { v.score = 5; });
       state.guests.forEach(g => { g.score = 5; });
 
       updateFilterUI();
       tone(600, 0.05);
+
+      controls.style.opacity = "1";           // Fix: undo the finish-game dim
+      controls.style.pointerEvents = "auto";  // Fix
+
       showWelcome();
       broadcastState();
     }
@@ -4480,6 +4600,7 @@
         remaining: state.queue.length,
         filter: state.filter,
         votePhase: state.votePhase,
+        gameOver: state.gameOver, // NEW
         voters: state.voters.map(v => ({ id: v.id, name: v.name, score: v.score, voted: v.voted, vote: v.vote })),
         guests: state.guests.map(g => ({ id: g.id, name: g.name, score: g.score, voted: g.voted, vote: g.vote }))
       };
@@ -4509,14 +4630,28 @@
       state.skipCount = p.skipCount;
       remoteRemaining = p.remaining;
       if (p.votePhase) state.votePhase = p.votePhase;
+
+      // Sync voters and relabel the host so guests don't see "You" for the host's score
       if (Array.isArray(p.voters)) {
         state.voters = p.voters.map(v => ({ ...v }));
-        // On guest devices, voters[0] is the host's entry. Label it "Host" so the
-        // leaderboard and reveal don't show the host as "You" on everyone's screen.
         if (role === "guest" && state.voters[0]) state.voters[0].name = "Host";
       }
+
       if (Array.isArray(p.guests)) state.guests = p.guests.map(g => ({ ...g }));
 
+      // Check for game over (if you added the Finish Game feature)
+      if (p.gameOver && !state.gameOver) {
+        state.gameOver = true;
+        showSummary(); // or showPodium() depending on what you named it
+        revealSound();
+        burst(100);
+      } else if (!p.gameOver && state.gameOver) {
+        state.gameOver = false;
+        closeModal();
+      }
+
+      // Guest-side adult check: if host switches to an adult deck and guest hasn't consented,
+      // pause the card and show the gate.
       if (role === "guest" && filterChanged && isAdultFilter(p.filter) && !hasConsent()) {
         state.filter = p.filter;
         updateFilterUI();
@@ -4525,7 +4660,7 @@
         qEl.textContent = "Waiting for you to confirm 18+ content…";
         showConsentModal(
           () => { if (state.pendingCard) { render(state.pendingCard, { animate: true }); state.pendingCard = null; } },
-          () => { }
+          () => { /* declined — leave the paused state */ }
         );
         return;
       }
@@ -4542,7 +4677,7 @@
         const isNewCard = drawnChanged || !sameCard;
         if (isNewCard) {
           cardSound();
-          myVoted = false;
+          myVoted = false; // Resets the guest's vote pill
           state.pendingCard = null;
         }
         render(p.card, { animate: isNewCard });
@@ -4552,6 +4687,7 @@
         showWelcome();
       }
     }
+
     /* =========================================================
        14. PARTY MODE UI
        ========================================================= */
@@ -5020,6 +5156,7 @@
       try { seen = localStorage.getItem(INTRO_KEY) === "1"; } catch (e) { }
       if (!seen && !joining) setTimeout(() => openIntro(0), 450);
     })();
+    endGameBtn.addEventListener("click", endGame);
   </script>
 </body>
 
